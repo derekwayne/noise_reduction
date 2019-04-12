@@ -3,10 +3,10 @@ title: "Denoising Images"
 author: "Derek Wayne"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
-  html_notebook: default
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
+  html_notebook: default
 subtitle: Applications of the Walsh-Hadamard Transform
 abstract: |
   The Hadamard transform is an example of a generalized Fourier transform. It has
@@ -42,13 +42,14 @@ $$
 
 Loading in the image as a matrix:
 \newline
-```{r fig.width=5, fig.height=5, fig.cap="Original Noisy Image"}
-library(ggplot2)
+```{r fig.width=5, fig.height=5}
 boats <- matrix(scan("boats.txt"), ncol=256, byrow=T)
-image(boats, axes=F, col=grey(seq(0,1,length=256)))
+image(boats, axes=F, col=grey(seq(0,1,length=256)), xlab = "Original")
 ```
+
 Below is an implementation of the FWHT.
-```{r, echo=FALSE}
+
+```{r}
 fwht2d <- function(x) {
   h <- 1
   length <- ncol(x)
@@ -79,6 +80,7 @@ fwht2d <- function(x) {
   x
 }
 ```
+
 
 Below are the functions to perform soft and hard thresholding.
 
@@ -139,12 +141,14 @@ soft <- sub.im.transform(boats, 64, Th.type = "soft", thresh = 7)
 image(boats, axes=F, col=grey(seq(0,1,length=256)), xlab="Original")
 image(soft, axes=F, col=grey(seq(0,1,length=256)), xlab="Soft Threshold: lam=7")
 ```
+
 ```{r, fig.align="center"}
 par(mfrow=c(1,2))
 hard <- sub.im.transform(boats, 32, Th.type = "hard", thresh = 6)
 image(boats, axes=F, col=grey(seq(0,1,length=256)), xlab="Original")
 image(hard, axes=F, col=grey(seq(0,1,length=256)), xlab="Hard Threshold: lam=6")
 ```
+
 ```{r, fig.align="center"}
 par(mfrow=c(1,2))
 soft2 <- sub.im.transform(boats, 8, Th.type = "soft", thresh = 0.8)
