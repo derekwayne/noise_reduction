@@ -3,10 +3,10 @@ title: "Denoising Images"
 author: "Derek Wayne"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
-  pdf_document: default
+  html_notebook: default
   html_document:
     df_print: paged
-  html_notebook: default
+  pdf_document: default
 subtitle: Applications of the Walsh-Hadamard Transform
 abstract: |
   The Hadamard transform is an example of a generalized Fourier transform. It has
@@ -41,11 +41,12 @@ $$
 $$
 
 Loading in the image as a matrix:
-\newline
-```{r fig.width=5, fig.height=5}
+
+```{r, fig.height=5, fig.width=5}
 boats <- matrix(scan("boats.txt"), ncol=256, byrow=T)
-image(boats, axes=F, col=grey(seq(0,1,length=256)), xlab = "Original")
+image(boats, axes=F, col=grey(seq(0,1,length=256)), main = "Original")
 ```
+
 
 Below is an implementation of the FWHT.
 
@@ -134,26 +135,27 @@ sub.im.transform <- function(image, size, Th.type="soft", thresh) {
 }
 ```
 
+# Results
 
-```{r, fig.align="center", fig.cap=""}
+```{r, fig.align="center", echo=F, fig.height=5}
 par(mfrow=c(1,2))
 soft <- sub.im.transform(boats, 64, Th.type = "soft", thresh = 7)
-image(boats, axes=F, col=grey(seq(0,1,length=256)), xlab="Original")
-image(soft, axes=F, col=grey(seq(0,1,length=256)), xlab="Soft Threshold: lam=7")
+image(boats, axes=F, col=grey(seq(0,1,length=256)), main="Original")
+image(soft, axes=F, col=grey(seq(0,1,length=256)), main="Soft Threshold: lam=7")
 ```
 
-```{r, fig.align="center"}
+```{r, fig.align="center", echo=F, fig.height=5}
 par(mfrow=c(1,2))
 hard <- sub.im.transform(boats, 32, Th.type = "hard", thresh = 6)
-image(boats, axes=F, col=grey(seq(0,1,length=256)), xlab="Original")
-image(hard, axes=F, col=grey(seq(0,1,length=256)), xlab="Hard Threshold: lam=6")
+image(boats, axes=F, col=grey(seq(0,1,length=256)), main="Original")
+image(hard, axes=F, col=grey(seq(0,1,length=256)), main="Hard Threshold: lam=6")
 ```
 
-```{r, fig.align="center"}
+```{r, fig.align="center", echo=F, fig.height=5}
 par(mfrow=c(1,2))
 soft2 <- sub.im.transform(boats, 8, Th.type = "soft", thresh = 0.8)
-image(boats, axes=F, col=grey(seq(0,1,length=256)), xlab="Original")
-image(soft2, axes=F, col=grey(seq(0,1,length=256)), xlab="Soft Threshold: lam=0.8")
+image(boats, axes=F, col=grey(seq(0,1,length=256)), main="Original")
+image(soft2, axes=F, col=grey(seq(0,1,length=256)), main="Soft Threshold: lam=0.8")
 ```
 
 
